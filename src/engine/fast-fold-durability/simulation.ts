@@ -83,7 +83,7 @@ export function formatDurabilityReport(report: FastFoldDurabilityReport): string
 }
 
 export function simulateFastFold100Hands(): FastFoldSimulationResult {
-  const engine = new HandHistoryEngine();
+  const engine: any = new HandHistoryEngine();
   const handRecords: HandRecord[] = [];
 
   engine.subscribe({

@@ -25,7 +25,8 @@ import type {
   HandStartedEvent,
   PlayerSnapshot,
 } from '../hand-history/types';
-import { createDurabilityReport, type FastFoldDurabilityReport } from './simulation';
+import { createDurabilityReport } from './simulation';
+import type { FastFoldDurabilityReport } from './index';
 
 export type MetricSource = 'synthetic' | 'measured';
 
@@ -361,7 +362,7 @@ export function simulateFastFold100HandsThroughEngine(): FastFoldRealEngineSimul
 
   let context = createContext(queue, createTableState({ tableId: 'table-1', handId: null, actionOrder: [], actingPlayerId: null }));
 
-  const history = new HandHistoryEngine();
+  const history: any = new HandHistoryEngine();
   const handRecords: HandRecord[] = [];
   history.subscribe({
     onActionRecorded: () => undefined,

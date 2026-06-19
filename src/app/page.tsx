@@ -6,8 +6,8 @@ import type { QueueState } from '../engine/queue/types';
 import { Street } from '../engine/table-state/types';
 import { useGameEngine } from '../hooks/useGameEngine';
 import { usePersistence } from '../hooks/usePersistence';
-import { HomePage } from '../pages/Home';
-import { TablePage } from '../pages/Table';
+import { HomePage } from '../components/Home';
+import { TablePage } from '../components/Table';
 import { loadSessionSummaries, saveSessionSummary, type SessionSummary } from './sessionSummaryStorage';
 import { calculateStreak, hasSessionOnToday } from './streak';
 

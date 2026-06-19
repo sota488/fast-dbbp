@@ -112,15 +112,15 @@ export class HandHistoryEngine {
 
     // HAND_STARTED ActionEvent を作成
     const handStartedEvent: ActionEvent = {
-      eventId: `${event.handId}-HAND_STARTED`,
-      handId: event.handId,
-      sessionId: event.sessionId,
-      seq: 0,
-      timestamp: event.startedAt,
-      playerId: 'SYSTEM',
-      action: 'HAND_STARTED',
-    };
-
+  eventId: `${event.handId}-HAND_STARTED`,
+  handId: event.handId,
+  sessionId: event.sessionId,
+  seq: 0,
+  timestamp: event.startedAt,
+  playerId: 'SYSTEM',
+  action: 'HAND_STARTED',
+  amount: 0,
+};
     this.currentHandBuffer.push(handStartedEvent);
 
     // emit
@@ -200,21 +200,19 @@ export class HandHistoryEngine {
       return;
     }
 
-    this.lastFastFoldDequeuedAt = event.dequeuedAt;
+const foldToNextHandMs = event.dequeuedAt - event.foldedAt;
 
-    const foldToNextHandMs = event.dequeuedAt - event.foldedAt;
-
-    const fastFoldEvent: ActionEvent = {
-      eventId: `${event.handId}-FAST_FOLD_CONFIRMED-${event.playerId}`,
-      handId: event.handId,
-      sessionId: event.sessionId,
-      seq: this.currentHandBuffer.length,
-      timestamp: event.dequeuedAt,
-      playerId: event.playerId,
-      action: 'HAND_STARTED', // placeholder
-      amount: 0,
-      foldToNextHandMs,
-    };
+const fastFoldEvent: ActionEvent = {
+  eventId: `${event.handId}-FAST_FOLD_CONFIRMED-${event.playerId}`,
+  handId: event.handId,
+  sessionId: event.sessionId,
+  seq: this.currentHandBuffer.length,
+  timestamp: event.dequeuedAt,
+  playerId: event.playerId,
+  action: 'HAND_STARTED', // placeholder
+  amount: 0,
+  foldToNextHandMs,
+};
 
     this.currentHandBuffer.push(fastFoldEvent);
 
