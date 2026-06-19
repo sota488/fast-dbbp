@@ -44,12 +44,12 @@ export function calculateStreak(sessions: SessionSummary[]): number {
 
 export function streakLabel(streak: number): string {
   if (streak === 0) {
-    return 'Start your streak.';
+    return '連続達成を始めよう。';
   }
   if (streak === 1) {
-    return '1 Day Streak';
+    return '1日継続中';
   }
-  return `${streak} Day Streak`;
+  return `${streak}日継続中`;
 }
 
 export function hasSessionOnToday(sessions: SessionSummary[]): boolean {

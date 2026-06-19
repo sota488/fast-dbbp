@@ -44,6 +44,7 @@ interface MeasuredFastFoldSession {
 
 const HERO_ID = 'hero-1';
 const TABLE_ID = 'table-1';
+const HERO_HAND = ['Ah', 'As', 'Kd', 'Kc'];
 
 function normalizeQueueStateForSave(queueState: QueueState): QueueState {
   const copiedPlayerPool = new Map(
@@ -101,7 +102,7 @@ export default function Page() {
   const { state, joinQueue, startHand, applyAction, enqueueFromBettingEvent, assignNextTable, restoreGame, resetGame } = useGameEngine();
   const persistence = usePersistence({ keyPrefix: 'ffo:persistence', supportedSchemaVersion: 1 });
   const [screen, setScreen] = useState<Screen>('home');
-  const [message, setMessage] = useState('Ready');
+  const [message, setMessage] = useState('準備完了');
   const [playingState, setPlayingState] = useState<PlayingState>('PLAYING');
   const [toast, setToast] = useState<ToastState | null>(null);
   const [sessionCompleteModalOpen, setSessionCompleteModalOpen] = useState(false);
@@ -172,7 +173,7 @@ export default function Page() {
 
   function runAction(type: GameActionType): void {
     if (!state.tableState.handId || !state.tableState.currentStreet) {
-      setMessage('Action failed: hand not ready');
+      setMessage('アクション失敗: ハンド未開始');
       return;
     }
 
@@ -201,21 +202,21 @@ export default function Page() {
       return;
     }
 
-    setMessage(`${type} applied`);
+    setMessage(`アクション実行: ${type}`);
 
     if (type === 'FOLD') {
       // ===== Fast Fold Engine Flow =====
       if (foldTappedAt === undefined) {
-          setMessage('Fast DBBP failed: missing fold snapshot');
+          setMessage('Fast DBBP失敗: フォールド時刻が取得できません');
         return;
       }
 
       // 1. FAST_FOLDING 状態に遷移 + foldTappedAt を記録
       setPlayingState('FAST_FOLDING');
-      setToast({ title: 'Folding...' });
+      setToast({ title: 'フォールド中...' });
 
       if (!result.queueEvent) {
-        setMessage('Fast DBBP failed: queue event not emitted');
+        setMessage('Fast DBBP失敗: キューイベント未発行');
         setPlayingState('PLAYING');
         setToast(null);
         return;
@@ -229,7 +230,7 @@ export default function Page() {
       const assignResult = assignNextTable();
 
       if (!assignResult.ok) {
-        setMessage(`Table assignment failed: ${assignResult.reason}`);
+        setMessage(`テーブル割り当て失敗: ${assignResult.reason}`);
         setPlayingState('PLAYING');
         setToast(null);
         return;
@@ -247,7 +248,7 @@ export default function Page() {
       const startResult = startHand(newTableId);
 
       if (!startResult.ok) {
-        setMessage(`Start hand failed: ${startResult.reason}`);
+        setMessage(`ハンド開始失敗: ${startResult.reason}`);
         setPlayingState('PLAYING');
         setToast(null);
         return;
@@ -275,9 +276,9 @@ export default function Page() {
 
       // 6. PLAYING に戻る + 実測値を確定
       setPlayingState('PLAYING');
-      setMessage('✨ Next Hand Ready');
+      setMessage('✨ 次のハンド準備完了');
       setToast({
-        title: '✨ Next Hand Ready',
+        title: '✨ 次のハンド準備完了',
         value: `${foldToNextHandMs.toFixed(1)}ms`,
       });
     }
@@ -302,28 +303,28 @@ export default function Page() {
       Date.now(),
     );
 
-    setMessage(result.ok ? 'Saved checkpoint' : `Save failed: ${result.reason ?? 'unknown'}`);
+    setMessage(result.ok ? '保存しました' : `保存失敗: ${result.reason ?? '不明なエラー'}`);
   }
 
   function handleRestore(): void {
     const result = restoreGame(TABLE_ID);
     if (!result.ok) {
-      setMessage(`Restore failed: ${result.reason ?? 'unknown'}`);
+      setMessage(`復元失敗: ${result.reason ?? '不明なエラー'}`);
       return;
     }
 
     setScreen('table');
-    setMessage('Restored from localStorage');
+    setMessage('ローカル保存から復元しました');
   }
 
   function handleStartHand(): void {
     const result = startHand(TABLE_ID);
     if (!result.ok) {
-      setMessage(`Start failed: ${result.reason ?? 'unknown'}`);
+      setMessage(`開始失敗: ${result.reason ?? '不明なエラー'}`);
       return;
     }
     setScreen('table');
-    setMessage('Hand started');
+    setMessage('ハンド開始');
   }
 
   if (screen === 'table') {
@@ -335,6 +336,7 @@ export default function Page() {
           pot={state.tableState.totalPot}
           players={activePlayers}
           heroId={HERO_ID}
+          heroHand={HERO_HAND}
           actingPlayerId={state.tableState.actingPlayerId}
           onFold={() => runAction('FOLD')}
           isFoldAnimating={playingState === 'FAST_FOLDING'}
@@ -353,34 +355,34 @@ export default function Page() {
         <div className="app-shell" style={{ paddingTop: 0 }}>
           <section className="ui-card">
             <div className="state-row">
-              <h2 className="card-title" style={{ marginBottom: 0 }}>State</h2>
+              <h2 className="card-title" style={{ marginBottom: 0 }}>状態</h2>
               <span className="state-chip">{playingState}</span>
             </div>
           </section>
 
           <section className="ui-card" style={{ marginTop: '16px' }}>
-            <h2 className="card-title">Measured Metrics</h2>
+            <h2 className="card-title">プレイKPI</h2>
             <div className="metric-main-grid">
               <div className="metric-item">
-                <p className="metric-label">Hands Today</p>
+                <p className="metric-label">今日のハンド数</p>
                 <p className="metric-value metric-value-lg">{handsPlayed}</p>
               </div>
               <div className="metric-item">
-                <p className="metric-label">Daily Goal</p>
+                <p className="metric-label">本日の目標</p>
                 <p className="metric-value metric-value-lg">{handsPlayed} / 100</p>
               </div>
               <div className="metric-item">
-                <p className="metric-label">Progress %</p>
+                <p className="metric-label">達成率</p>
                 <p className="metric-value metric-value-lg">{progressPercent}%</p>
               </div>
             </div>
 
             <div className="metric-progress-wrap">
               <div className="metric-progress-head">
-                <p className="metric-label">Progress</p>
+                <p className="metric-label">進捗</p>
                 <p className="metric-progress-text">{progressPercent}%</p>
               </div>
-              <div className="metric-progress-track" aria-label="Progress Bar">
+              <div className="metric-progress-track" aria-label="進捗バー">
                 <div className="metric-progress-fill" style={{ width: `${progressPercent}%` }} />
               </div>
             </div>
@@ -389,8 +391,8 @@ export default function Page() {
               <details className="metric-details">
                 <summary>詳細を見る</summary>
                 <div className="metric-details-grid">
-                  <div className="metric-item"><p className="metric-label">Avg DBBP</p><p className="metric-value">{measuredSession.summary.avg.toFixed(0)}ms</p></div>
-                  <div className="metric-item"><p className="metric-label">Best DBBP</p><p className="metric-value">{bestFastFold !== null ? `${bestFastFold.toFixed(0)}ms` : '-'}</p></div>
+                  <div className="metric-item"><p className="metric-label">平均DBBP</p><p className="metric-value">{measuredSession.summary.avg.toFixed(0)}ms</p></div>
+                  <div className="metric-item"><p className="metric-label">最速DBBP</p><p className="metric-value">{bestFastFold !== null ? `${bestFastFold.toFixed(0)}ms` : '-'}</p></div>
                   <div className="metric-item"><p className="metric-label">p50</p><p className="metric-value">{measuredSession.summary.p50.toFixed(1)}ms</p></div>
                   <div className="metric-item"><p className="metric-label">p95</p><p className="metric-value">{measuredSession.summary.p95.toFixed(1)}ms</p></div>
                   <div className="metric-item"><p className="metric-label">p99</p><p className="metric-value">{measuredSession.summary.p99.toFixed(1)}ms</p></div>
@@ -404,29 +406,29 @@ export default function Page() {
         {sessionCompleteModalOpen && (
           <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Session Complete Modal">
             <section className="modal-card">
-              <p className="modal-kicker">🎉 100 Hands Complete!</p>
-              <h2 className="modal-title">You finished today&apos;s challenge.</h2>
+              <p className="modal-kicker">🎉 100ハンド達成！</p>
+              <h2 className="modal-title">本日のチャレンジを完了しました。</h2>
               <div className="modal-metrics">
                 <div className="modal-metric-item">
-                  <p className="modal-metric-label">Hands Played</p>
+                  <p className="modal-metric-label">プレイハンド数</p>
                   <p className="modal-metric-value">{handsPlayed}</p>
                 </div>
                 <div className="modal-metric-item">
-                  <p className="modal-metric-label">Daily Goal Progress</p>
+                  <p className="modal-metric-label">本日の目標達成率</p>
                   <p className="modal-metric-value">{progressPercent}%</p>
                 </div>
                 <div className="modal-metric-item">
-                  <p className="modal-metric-label">Current Streak</p>
-                  <p className="modal-metric-value">{currentStreak} Day Streak</p>
+                  <p className="modal-metric-label">連続達成日数</p>
+                  <p className="modal-metric-value">{currentStreak}日</p>
                 </div>
               </div>
-              <p className="modal-footer">Keep going on Fast DBBP tomorrow.</p>
+              <p className="modal-footer">明日もFast DBBPで続けましょう。</p>
               <button
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => setSessionCompleteModalOpen(false)}
               >
-                Close
+                閉じる
               </button>
             </section>
           </div>
@@ -445,18 +447,18 @@ export default function Page() {
         joinQueue(HERO_ID, 'human', 1000);
         const result = startHand(TABLE_ID);
         if (!result.ok) {
-          setMessage(`Start failed: ${result.reason ?? 'unknown'}`);
+          setMessage(`開始失敗: ${result.reason ?? '不明なエラー'}`);
           return;
         }
         setScreen('table');
-        setMessage('Hand started');
+        setMessage('ハンド開始');
       }}
       onSave={handleSave}
       onRestore={handleRestore}
       onReset={() => {
         resetGame();
         setScreen('home');
-        setMessage('Game reset');
+        setMessage('リセットしました');
       }}
       message={message}
     />

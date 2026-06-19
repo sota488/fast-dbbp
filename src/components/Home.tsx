@@ -17,18 +17,18 @@ export interface HomePageProps {
 
 function goalMessage(handsPlayed: number): string {
   if (handsPlayed >= 100) {
-    return 'Goal completed 🎉';
+    return '目標達成！🎉';
   }
   if (handsPlayed >= 75) {
-    return 'Almost done.';
+    return 'あと少し！';
   }
   if (handsPlayed >= 50) {
-    return 'Halfway there.';
+    return '半分達成！';
   }
   if (handsPlayed >= 25) {
-    return 'Nice pace.';
+    return '良いペースです。';
   }
-  return 'Let\'s get started.';
+  return 'ここからスタート。';
 }
 
 export function HomePage(props: HomePageProps): React.JSX.Element {
@@ -44,21 +44,21 @@ export function HomePage(props: HomePageProps): React.JSX.Element {
       <div className="stack">
         <section className="hero-card">
           <h1 className="hero-title">Fast DBBP</h1>
-          <p className="hero-subtitle">Practice 100 hands a day.\nBuild your DBBP instincts.</p>
-          <p className="hero-caption">A daily DBBP training habit.</p>
+          <p className="hero-subtitle">毎日100ハンドを高速反復。\n実戦感覚でDBBPを鍛える。</p>
+          <p className="hero-caption">習慣ではなく、プレイ感のあるトレーニングへ。</p>
           <div className="button-stack">
             <button type="button" className="btn btn-primary" onClick={onPlay}>
-              Play Now
+              ハンド開始
             </button>
           </div>
         </section>
 
         <section className="ui-card" aria-label="Daily Goal Card">
-          <h2 className="card-title">Today&apos;s Goal</h2>
-          <p className="daily-goal-value">{normalizedHands} / 100 Hands</p>
+          <h2 className="card-title">今日の目標</h2>
+          <p className="daily-goal-value">{normalizedHands} / 100 ハンド</p>
           <div className="metric-progress-wrap" style={{ marginBottom: 10 }}>
             <div className="metric-progress-head">
-              <p className="metric-label">Progress</p>
+              <p className="metric-label">進捗</p>
               <p className="metric-progress-text">{goalPercent}%</p>
             </div>
             <div className="metric-progress-track" aria-label="Daily Goal Progress Bar">
@@ -69,55 +69,55 @@ export function HomePage(props: HomePageProps): React.JSX.Element {
         </section>
 
         <section className="ui-card" aria-label="Streak Card">
-          <h2 className="card-title">🔥 Streak</h2>
+          <h2 className="card-title">🔥 連続達成日数</h2>
           <p className="streak-value">{streak}日</p>
           <p className="streak-copy">{streakText}</p>
         </section>
 
         <section className="value-grid" aria-label="Value Cards">
           <article className="value-card">
-            <p className="value-title">⚡ Fast Practice</p>
-            <p className="value-body">Jump into the next hand instantly.</p>
+            <p className="value-title">⚡ 高速練習</p>
+            <p className="value-body">フォールド後すぐ次の局面へ。</p>
           </article>
           <article className="value-card">
-            <p className="value-title">📈 Track Progress</p>
-            <p className="value-body">Measure your speed and consistency.</p>
+            <p className="value-title">📈 進捗の可視化</p>
+            <p className="value-body">手数、達成率、継続日数を追跡。</p>
           </article>
           <article className="value-card">
-            <p className="value-title">🎯 Build Habits</p>
-            <p className="value-body">100 hands a day keeps the rust away.</p>
+            <p className="value-title">🎯 実戦感トレーニング</p>
+            <p className="value-body">短時間で判断を磨く反復練習。</p>
           </article>
         </section>
 
         <section className="ui-card">
-          <h2 className="card-title">Today</h2>
-          <p className="card-subtext">Players waiting: {queueCount}</p>
+          <h2 className="card-title">本日の待機状況</h2>
+          <p className="card-subtext">待機プレイヤー: {queueCount}</p>
         </section>
 
         <SessionHistoryCard sessions={recentSessions} allSessions={allSessions} onPlay={onPlay} />
 
         <section className="ui-card" aria-label="How It Works Card">
-          <h2 className="card-title">How It Works</h2>
+          <h2 className="card-title">使い方</h2>
           <ol className="how-list">
-            <li className="how-item">1. Start a hand</li>
-            <li className="how-item">2. Fold instantly</li>
-            <li className="how-item">3. Repeat until 100 hands</li>
-            <li className="how-item">4. Review your progress</li>
+            <li className="how-item">1. ハンド開始</li>
+            <li className="how-item">2. Heroハンドを見て判断</li>
+            <li className="how-item">3. 100ハンドまで反復</li>
+            <li className="how-item">4. 進捗と連続達成を確認</li>
           </ol>
         </section>
 
         <section className="ui-card">
-          <h2 className="card-title">Utility Actions</h2>
+          <h2 className="card-title">ユーティリティ</h2>
           <p className="status-message" style={{ marginBottom: '12px' }}>{message}</p>
           <div className="button-stack">
             <button type="button" className="btn btn-tertiary" onClick={onRestore}>
-              Restore
+              復元
             </button>
             <button type="button" className="btn btn-tertiary" onClick={onSave}>
-              Save
+              保存
             </button>
             <button type="button" className="btn btn-tertiary" onClick={onReset}>
-              Reset
+              リセット
             </button>
           </div>
         </section>

@@ -60,6 +60,7 @@ body {
   color: #ffffff;
   background: linear-gradient(135deg, #ff7eb6 0%, #b794f4 50%, #7dd3fc 100%);
   box-shadow: var(--shadow-accent);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .hero-title {
@@ -345,7 +346,7 @@ body {
 
 .btn-fold.is-folding {
   transform: scale(0.96);
-  background: linear-gradient(135deg, #ffa3cb 0%, #cc9ff7 55%, #9ce2ff 100%);
+  background: linear-gradient(135deg, #ff7d5f 0%, #ff9f7a 55%, #ffc1a9 100%);
 }
 
 .modal-overlay {
@@ -570,12 +571,16 @@ body {
 }
 
 .session-progress-diff.is-faster {
-  color: #2563eb;
+  color: #5ad39f;
 }
 
-.session-progress-diff.is-slower,
+.session-progress-diff.is-down,
 .session-progress-diff.is-same {
   color: #6b7280;
+}
+
+.session-progress-diff.is-up {
+  color: #2563eb;
 }
 
 .session-history-empty-title {
@@ -625,4 +630,87 @@ body {
   font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+.poker-table-card {
+  padding: 14px;
+}
+
+.table-felt {
+  position: relative;
+  min-height: 260px;
+  border-radius: 999px;
+  border: 2px solid #2f6a52;
+  background:
+    radial-gradient(70% 75% at 50% 45%, #1f5b45 0%, #124533 68%, #0f3528 100%);
+  overflow: hidden;
+}
+
+.seat {
+  position: absolute;
+  width: 72px;
+  min-height: 40px;
+  border-radius: 12px;
+  padding: 5px 4px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #f8fafc;
+  background: rgba(30, 41, 59, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.seat-utg { top: 8px; left: 50%; transform: translateX(-50%); }
+.seat-hj { top: 64px; left: 18px; }
+.seat-co { top: 64px; right: 18px; }
+.seat-sb { bottom: 28px; left: 16px; }
+.seat-btn { bottom: 28px; right: 16px; }
+.seat-bb { top: 120px; left: 50%; transform: translateX(-50%); }
+
+.table-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.pot-label {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.table-actioning {
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.hero-hand-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-card-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #8ed3b1;
+  background: #f8fffb;
+  color: #11231b;
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.button-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }

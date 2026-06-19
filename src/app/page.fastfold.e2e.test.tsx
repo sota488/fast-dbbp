@@ -57,10 +57,10 @@ describe('Fast Fold success E2E', () => {
 
     const text = container.textContent ?? '';
     expect(text).toContain('Fast DBBP');
-    expect(text).toContain('Play Now');
-    expect(text).toContain('Session History');
-    expect(text).toContain('Start your first session');
-    expect(text).toContain('Play 100 hands on Fast DBBP and your progress will appear here.');
+    expect(text).toContain('ハンド開始');
+    expect(text).toContain('セッション履歴');
+    expect(text).toContain('最初のセッションを開始');
+    expect(text).toContain('Fast DBBPで100ハンドプレイすると、ここに履歴が表示されます。');
 
     act(() => {
       root.unmount();
@@ -120,9 +120,9 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain('Fast Practice');
-    expect(text).toContain('Track Progress');
-    expect(text).toContain('Build Habits');
+    expect(text).toContain('高速練習');
+    expect(text).toContain('進捗の可視化');
+    expect(text).toContain('実戦感トレーニング');
 
     act(() => {
       root.unmount();
@@ -140,9 +140,9 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain("Today's Goal");
-    expect(text).toContain('0 / 100 Hands');
-    expect(text).toContain("Let's get started.");
+    expect(text).toContain('今日の目標');
+    expect(text).toContain('0 / 100 ハンド');
+    expect(text).toContain('ここからスタート。');
 
     act(() => {
       root.unmount();
@@ -166,15 +166,15 @@ describe('Fast Fold success E2E', () => {
       root.render(React.createElement(Page));
     });
 
-    clickButton(container, 'Play Now');
+    clickButton(container, 'ハンド開始');
     for (let i = 0; i < 50; i += 1) {
       clickButton(container, 'Fold');
     }
-    clickButton(container, 'Back Home');
+    clickButton(container, 'ホームへ戻る');
 
     const text = container.textContent ?? '';
-    expect(text).toContain('50 / 100 Hands');
-    expect(text).toContain('Halfway there.');
+    expect(text).toContain('50 / 100 ハンド');
+    expect(text).toContain('半分達成！');
 
     act(() => {
       root.unmount();
@@ -199,16 +199,16 @@ describe('Fast Fold success E2E', () => {
       root.render(React.createElement(Page));
     });
 
-    clickButton(container, 'Play Now');
+    clickButton(container, 'ハンド開始');
     for (let i = 0; i < 100; i += 1) {
       clickButton(container, 'Fold');
     }
-    clickButton(container, 'Close');
-    clickButton(container, 'Back Home');
+    clickButton(container, '閉じる');
+    clickButton(container, 'ホームへ戻る');
 
     const text = container.textContent ?? '';
-    expect(text).toContain('100 / 100 Hands');
-    expect(text).toContain('Goal completed 🎉');
+    expect(text).toContain('100 / 100 ハンド');
+    expect(text).toContain('目標達成！🎉');
 
     act(() => {
       root.unmount();
@@ -227,8 +227,8 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain('🔥 Streak');
-    expect(text).toContain('Start your streak.');
+    expect(text).toContain('🔥 連続達成日数');
+    expect(text).toContain('連続達成を始めよう。');
 
     act(() => {
       root.unmount();
@@ -254,7 +254,7 @@ describe('Fast Fold success E2E', () => {
 
     const text = container.textContent ?? '';
     expect(text).toContain('1日');
-    expect(text).toContain('1 Day Streak');
+    expect(text).toContain('1日継続中');
 
     act(() => {
       root.unmount();
@@ -283,7 +283,7 @@ describe('Fast Fold success E2E', () => {
 
     const text = container.textContent ?? '';
     expect(text).toContain('3日');
-    expect(text).toContain('3 Day Streak');
+    expect(text).toContain('3日継続中');
 
     act(() => {
       root.unmount();
@@ -311,8 +311,8 @@ describe('Fast Fold success E2E', () => {
 
     const text = container.textContent ?? '';
     expect(text).toContain('1日');
-    expect(text).toContain('1 Day Streak');
-    expect(text).not.toContain('2 Day Streak');
+    expect(text).toContain('1日継続中');
+    expect(text).not.toContain('2日継続中');
 
     act(() => {
       root.unmount();
@@ -335,9 +335,9 @@ describe('Fast Fold success E2E', () => {
 
     const cards = Array.from(container.querySelectorAll('[aria-label="Session History Item"]'));
     expect(cards).toHaveLength(3);
-    expect(cards[0].textContent ?? '').toContain('Avg DBBP123ms');
-    expect(cards[1].textContent ?? '').toContain('Avg DBBP122ms');
-    expect(cards[2].textContent ?? '').toContain('Avg DBBP121ms');
+    expect(cards[0].textContent ?? '').toContain('平均DBBP123ms');
+    expect(cards[1].textContent ?? '').toContain('平均DBBP122ms');
+    expect(cards[2].textContent ?? '').toContain('平均DBBP121ms');
 
     act(() => {
       root.unmount();
@@ -358,8 +358,8 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain('Your Progress');
-    expect(text).toContain('Play one more session to compare.');
+    expect(text).toContain('あなたの進捗');
+    expect(text).toContain('比較するにはもう1セッション必要です。');
 
     act(() => {
       root.unmount();
@@ -391,10 +391,10 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain('Your Progress');
-    expect(text).toContain('Sessions Completed');
-    expect(text).toContain('Hands Played');
-    expect(text).toContain('Current Streak');
+    expect(text).toContain('あなたの進捗');
+    expect(text).toContain('完了セッション');
+    expect(text).toContain('プレイハンド数');
+    expect(text).toContain('連続達成日数');
 
     act(() => {
       root.unmount();
@@ -426,9 +426,9 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain('Sessions Completed');
-    expect(text).toContain('Hands Played');
-    expect(text).toContain('Current Streak');
+    expect(text).toContain('完了セッション');
+    expect(text).toContain('プレイハンド数');
+    expect(text).toContain('連続達成日数');
 
     act(() => {
       root.unmount();
@@ -460,7 +460,7 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain('No change');
+    expect(text).toContain('変化なし');
 
     act(() => {
       root.unmount();
@@ -478,11 +478,11 @@ describe('Fast Fold success E2E', () => {
     });
 
     const text = container.textContent ?? '';
-    expect(text).toContain('How It Works');
-    expect(text).toContain('Start a hand');
-    expect(text).toContain('Fold instantly');
-    expect(text).toContain('Repeat until 100 hands');
-    expect(text).toContain('Review your progress');
+    expect(text).toContain('使い方');
+    expect(text).toContain('ハンド開始');
+    expect(text).toContain('Heroハンドを見て判断');
+    expect(text).toContain('100ハンドまで反復');
+    expect(text).toContain('進捗と連続達成を確認');
 
     act(() => {
       root.unmount();
@@ -506,23 +506,33 @@ describe('Fast Fold success E2E', () => {
       root.render(React.createElement(Page));
     });
 
-    clickButton(container, 'Play Now');
+    clickButton(container, 'ハンド開始');
 
     const actingBeforeFold = container.textContent ?? '';
-    expect(actingBeforeFold).toContain('Acting:');
-    expect(actingBeforeFold).not.toContain('Acting: -');
+    expect(actingBeforeFold).toContain('アクション:');
+    expect(actingBeforeFold).not.toContain('アクション: -');
+    expect(actingBeforeFold).toContain('UTG');
+    expect(actingBeforeFold).toContain('HJ');
+    expect(actingBeforeFold).toContain('CO');
+    expect(actingBeforeFold).toContain('SB');
+    expect(actingBeforeFold).toContain('BTN');
+    expect(actingBeforeFold).toContain('BB');
+    expect(actingBeforeFold).toContain('Ah');
+    expect(actingBeforeFold).toContain('As');
+    expect(actingBeforeFold).toContain('Kd');
+    expect(actingBeforeFold).toContain('Kc');
 
     clickButton(container, 'Fold');
 
     const text = container.textContent ?? '';
 
-    expect(text).toContain('✨ Next Hand Ready');
-    expect(text).toContain('State');
-    expect(text).toContain('Measured Metrics');
-    expect(text).toContain('Hands Today');
-    expect(text).toContain('Daily Goal');
-    expect(text).toContain('Progress %');
-    expect(text).toContain('Progress');
+    expect(text).toContain('✨ 次のハンド準備完了');
+    expect(text).toContain('状態');
+    expect(text).toContain('プレイKPI');
+    expect(text).toContain('今日のハンド数');
+    expect(text).toContain('本日の目標');
+    expect(text).toContain('達成率');
+    expect(text).toContain('進捗');
     expect(text).toMatch(/\d+%/);
     expect(text).toContain('詳細を見る');
     expect(text).not.toContain('Not acting player');
@@ -555,29 +565,29 @@ describe('Fast Fold success E2E', () => {
       root.render(React.createElement(Page));
     });
 
-    clickButton(container, 'Play Now');
+    clickButton(container, 'ハンド開始');
 
     for (let i = 0; i < 99; i += 1) {
       clickButton(container, 'Fold');
     }
 
-    expect(container.textContent ?? '').not.toContain('🎉 100 Hands Complete!');
+    expect(container.textContent ?? '').not.toContain('🎉 100ハンド達成！');
 
     clickButton(container, 'Fold');
 
     const at100 = container.textContent ?? '';
-    expect(at100).toContain('🎉 100 Hands Complete!');
-    expect(at100).toContain('Hands Played');
-    expect(at100).toContain('Daily Goal Progress');
-    expect(at100).toContain('Current Streak');
+    expect(at100).toContain('🎉 100ハンド達成！');
+    expect(at100).toContain('プレイハンド数');
+    expect(at100).toContain('本日の目標達成率');
+    expect(at100).toContain('連続達成日数');
     expect(at100).toContain('100');
-    expect(at100).toContain('Close');
+    expect(at100).toContain('閉じる');
 
-    clickButton(container, 'Close');
-    expect(container.textContent ?? '').not.toContain('🎉 100 Hands Complete!');
+    clickButton(container, '閉じる');
+    expect(container.textContent ?? '').not.toContain('🎉 100ハンド達成！');
 
     clickButton(container, 'Fold');
-    expect(container.textContent ?? '').not.toContain('🎉 100 Hands Complete!');
+    expect(container.textContent ?? '').not.toContain('🎉 100ハンド達成！');
 
     act(() => {
       root.unmount();
@@ -602,7 +612,7 @@ describe('Fast Fold success E2E', () => {
       root.render(React.createElement(Page));
     });
 
-    clickButton(container, 'Play Now');
+    clickButton(container, 'ハンド開始');
 
     for (let i = 0; i < 100; i += 1) {
       clickButton(container, 'Fold');
@@ -640,13 +650,13 @@ describe('Fast Fold success E2E', () => {
       root.render(React.createElement(Page));
     });
 
-    clickButton(container, 'Play Now');
+    clickButton(container, 'ハンド開始');
 
     for (let i = 0; i < 100; i += 1) {
       clickButton(container, 'Fold');
     }
 
-    clickButton(container, 'Close');
+    clickButton(container, '閉じる');
     clickButton(container, 'Fold');
 
     const raw = window.localStorage.getItem(SESSION_SUMMARIES_STORAGE_KEY);
@@ -689,7 +699,7 @@ describe('Fast Fold success E2E', () => {
       root.render(React.createElement(Page));
     });
 
-    clickButton(container, 'Play Now');
+    clickButton(container, 'ハンド開始');
     for (let i = 0; i < 100; i += 1) {
       clickButton(container, 'Fold');
     }

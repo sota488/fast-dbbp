@@ -24,10 +24,10 @@ function toDayLabel(iso: string): string {
   const dayDiff = Math.round((today - completedDay) / 86400000);
 
   if (dayDiff === 0) {
-    return 'Today';
+    return '今日';
   }
   if (dayDiff === 1) {
-    return 'Yesterday';
+    return '昨日';
   }
 
   return completed.toLocaleDateString('ja-JP', {
@@ -55,7 +55,7 @@ function compareCount(currentValue: number, previousValue: number, suffix: strin
 
   return {
     kind: 'same',
-    label: 'No change',
+    label: '変化なし',
   };
 }
 
@@ -64,11 +64,11 @@ function streakContext(sessions: SessionSummary[], index: number): string {
   const previous = sessions[index + 1];
 
   if (!current) {
-    return 'Start point';
+    return '起点';
   }
 
   if (!previous) {
-    return 'Start point';
+    return '起点';
   }
 
   const currentDay = new Date(current.completedAt);
@@ -78,10 +78,10 @@ function streakContext(sessions: SessionSummary[], index: number): string {
   const diff = Math.round((currentDate - previousDate) / 86400000);
 
   if (diff === 1) {
-    return 'Streak chain';
+    return '連続中';
   }
 
-  return 'Streak reset point';
+  return '途切れポイント';
 }
 
 export function SessionHistoryCard(props: SessionHistoryCardProps): React.JSX.Element {
@@ -90,34 +90,34 @@ export function SessionHistoryCard(props: SessionHistoryCardProps): React.JSX.El
   const previous = sessions[1] ?? null;
   const currentStreak = calculateStreak(allSessions);
   const previousStreak = calculateStreak(allSessions.slice(1));
-  const sessionsComparison = sessions.length > 1 ? compareCount(allSessions.length, Math.max(0, allSessions.length - 1), 'session') : null;
-  const handsComparison = current && previous ? compareCount(current.handsPlayed, previous.handsPlayed, 'hands') : null;
-  const streakComparison = sessions.length > 1 ? compareCount(currentStreak, previousStreak, 'day') : null;
+  const sessionsComparison = sessions.length > 1 ? compareCount(allSessions.length, Math.max(0, allSessions.length - 1), '回') : null;
+  const handsComparison = current && previous ? compareCount(current.handsPlayed, previous.handsPlayed, 'ハンド') : null;
+  const streakComparison = sessions.length > 1 ? compareCount(currentStreak, previousStreak, '日') : null;
 
   return (
     <section className="ui-card">
-      <h2 className="card-title">Session History</h2>
+      <h2 className="card-title">セッション履歴</h2>
 
       {sessions.length > 0 ? (
         <section className="session-progress-card" aria-label="Your Progress Card">
-          <h3 className="session-progress-title">Your Progress</h3>
+          <h3 className="session-progress-title">あなたの進捗</h3>
           {sessions.length === 1 || !handsComparison || !streakComparison || !sessionsComparison ? (
-            <p className="session-progress-wait">Play one more session to compare.</p>
+            <p className="session-progress-wait">比較するにはもう1セッション必要です。</p>
           ) : (
             <div className="session-progress-grid">
               <article className="session-progress-item">
-                <p className="session-progress-metric-label">Sessions Completed</p>
+                <p className="session-progress-metric-label">完了セッション</p>
                 <p className="session-progress-metric-value">{allSessions.length}</p>
                 <p className={`session-progress-diff is-${sessionsComparison.kind}`}>{sessionsComparison.label}</p>
               </article>
               <article className="session-progress-item">
-                <p className="session-progress-metric-label">Hands Played</p>
+                <p className="session-progress-metric-label">プレイハンド数</p>
                 <p className="session-progress-metric-value">{current?.handsPlayed ?? 0}</p>
                 <p className={`session-progress-diff is-${handsComparison.kind}`}>{handsComparison.label}</p>
               </article>
               <article className="session-progress-item">
-                <p className="session-progress-metric-label">Current Streak</p>
-                <p className="session-progress-metric-value">{currentStreak} Day Streak</p>
+                <p className="session-progress-metric-label">連続達成日数</p>
+                <p className="session-progress-metric-value">{currentStreak}日</p>
                 <p className={`session-progress-diff is-${streakComparison.kind}`}>{streakComparison.label}</p>
               </article>
             </div>
@@ -127,10 +127,10 @@ export function SessionHistoryCard(props: SessionHistoryCardProps): React.JSX.El
 
       {sessions.length === 0 ? (
         <div className="session-history-empty">
-          <p className="session-history-empty-title">Start your first session</p>
-          <p className="session-history-empty-subcopy">Play 100 hands on Fast DBBP and your progress will appear here.</p>
+          <p className="session-history-empty-title">最初のセッションを開始</p>
+          <p className="session-history-empty-subcopy">Fast DBBPで100ハンドプレイすると、ここに履歴が表示されます。</p>
           <button type="button" className="btn btn-primary session-history-empty-cta" onClick={onPlay}>
-            Play Now
+            ハンド開始
           </button>
         </div>
       ) : (
@@ -139,14 +139,14 @@ export function SessionHistoryCard(props: SessionHistoryCardProps): React.JSX.El
             <article key={`${session.id}:${session.completedAt}`} className="session-history-item" aria-label="Session History Item">
               <p className="session-history-date">{toDayLabel(session.completedAt)}</p>
               <div className="session-history-metrics">
-                <p className="session-history-metric">{session.handsPlayed} Hands</p>
-                <p className="session-history-metric">Streak Context: {streakContext(sessions, index)}</p>
+                <p className="session-history-metric">{session.handsPlayed} ハンド</p>
+                <p className="session-history-metric">連続状況: {streakContext(sessions, index)}</p>
               </div>
               <details className="metric-details" style={{ marginTop: 8 }}>
-                <summary>Speed details</summary>
+                <summary>速度詳細</summary>
                 <div className="metric-details-grid">
-                  <div className="metric-item"><p className="metric-label">Avg DBBP</p><p className="metric-value">{session.avgFastFoldMs.toFixed(0)}ms</p></div>
-                  <div className="metric-item"><p className="metric-label">Best DBBP</p><p className="metric-value">{session.bestFastFoldMs.toFixed(0)}ms</p></div>
+                  <div className="metric-item"><p className="metric-label">平均DBBP</p><p className="metric-value">{session.avgFastFoldMs.toFixed(0)}ms</p></div>
+                  <div className="metric-item"><p className="metric-label">最速DBBP</p><p className="metric-value">{session.bestFastFoldMs.toFixed(0)}ms</p></div>
                 </div>
               </details>
             </article>

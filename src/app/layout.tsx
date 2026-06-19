@@ -3,16 +3,16 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Fast DBBP',
-  description: 'Fast DBBP practice app',
+  description: 'Fast DBBP 練習アプリ',
   openGraph: {
     title: 'Fast DBBP',
-    description: 'Fast DBBP practice app',
+    description: 'Fast DBBP 練習アプリ',
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body>{children}</body>
     </html>
   );
